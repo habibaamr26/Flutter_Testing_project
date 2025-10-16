@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_testing_lab/widgets/form/text_field.dart';
+import 'package:flutter_testing_lab/widgets/form/validation.dart';
+//كل feature branch فيه كل كود المشروع بالكامل،
+// بس إنتِ بتعدّلي فيه الجزء اللي يخص الـ feature دي فقط.
 
 class UserRegistrationForm extends StatefulWidget {
   const UserRegistrationForm({super.key});
@@ -16,14 +20,6 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
 
   bool _isLoading = false;
   String _message = '';
-
-  bool isValidEmail(String email) {
-    return email.contains('@');
-  }
-
-  bool isValidPassword(String password) {
-    return true;
-  }
 
   Future<void> _submitForm() async {
     setState(() {
@@ -49,84 +45,60 @@ class _UserRegistrationFormState extends State<UserRegistrationForm> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            TextFormField(
+            CustomTextField(
+              label: 'Full Name',
               controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: 'Full Name',
-                border: OutlineInputBorder(),
-              ),
               validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your full name';
-                }
-                if (value.length < 2) {
-                  return 'Name must be at least 2 characters';
-                }
-                return null;
+                return firstNameValidator(value);
               },
+              keyboardType: TextInputType.name,
             ),
             const SizedBox(height: 16),
-            TextFormField(
-              controller: _emailController,
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(),
-              ),
+            CustomTextField(
+              label: 'Email',
               keyboardType: TextInputType.emailAddress,
+              controller: _emailController,
+              hint: "habiba@gmail.com",
               validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your email';
-                }
-                if (!isValidEmail(value)) {
-                  return 'Please enter a valid email';
-                }
-                return null;
+                return emailValidator(value);
               },
             ),
             const SizedBox(height: 16),
-            TextFormField(
+
+            CustomTextField(
+              label: 'Password',
+              keyboardType: TextInputType.visiblePassword,
               controller: _passwordController,
-              decoration: const InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
-                helperText: 'At least 8 characters with numbers and symbols',
-              ),
-              obscureText: true,
+              helper: "At least 8 characters with numbers and symbols",
+              isPassword: true,
               validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter a password';
-                }
-                if (!isValidPassword(value)) {
-                  return 'Password is too weak';
-                }
-                return null;
+                return passwordValidator(value);
               },
             ),
+
             const SizedBox(height: 16),
-            TextFormField(
+            CustomTextField(
+              label: 'Confirm Password',
+              keyboardType: TextInputType.visiblePassword,
               controller: _confirmPasswordController,
-              decoration: const InputDecoration(
-                labelText: 'Confirm Password',
-                border: OutlineInputBorder(),
-              ),
-              obscureText: true,
+              isPassword: true,
               validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please confirm your password';
-                }
-                if (value != _passwordController.text) {
-                  return 'Passwords do not match';
-                }
-                return null;
+                return confirmPasswordValidator(value, _passwordController);
               },
             ),
             const SizedBox(height: 24),
             ElevatedButton(
-              onPressed: _isLoading ? null : _submitForm,
+              onPressed: () {
+                //logic
+               isValid(_formKey, _submitForm);
+              },
               child: _isLoading
                   ? const CircularProgressIndicator()
                   : const Text('Register'),
             ),
+
+
+
             if (_message.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(top: 16),
