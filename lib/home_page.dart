@@ -75,36 +75,6 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         ),
         child: Column(
           children: [
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.orange.shade100,
-                border: Border(
-                  bottom: BorderSide(color: Colors.orange.shade300),
-                ),
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.warning,
-                    color: Colors.orange.shade700,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      'Current Widget: ${_getWidgetName(_currentIndex)} - Contains bugs that need fixing!',
-                      style: TextStyle(
-                        color: Colors.orange.shade800,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
             Expanded(
               child: TabBarView(
                 controller: _tabController,
